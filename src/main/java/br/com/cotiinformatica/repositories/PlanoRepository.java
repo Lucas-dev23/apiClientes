@@ -12,50 +12,47 @@ import br.com.cotiinformatica.factories.ConnectionFactory;
 
 public class PlanoRepository {
 
-	public List<Plano> findAll() throws Exception{
-		
+	public List<Plano> findAll() throws Exception {
+
 		Connection connection = ConnectionFactory.getConnection();
-		
-		//escrevendo uma consulta no banco de dados
-		PreparedStatement statement = connection.prepareStatement
-				("select * from plano order by nome");
+
+		// escrevendo uma consulta no banco de dados
+		PreparedStatement statement = connection.prepareStatement("select * from plano order by nome");
 		ResultSet resultSet = statement.executeQuery();
-		
+
 		List<Plano> lista = new ArrayList<Plano>();
-		
-		while(resultSet.next()) {
-			
+
+		while (resultSet.next()) {
+
 			Plano plano = new Plano();
 			plano.setId(UUID.fromString(resultSet.getString("id")));
 			plano.setNome(resultSet.getString("nome"));
-			
+
 			lista.add(plano);
 		}
-		
-		//fechando conexão
+
+		// fechando conexão
 		connection.close();
 		return lista;
 	}
-	
+
 	public Plano findById(UUID id) throws Exception {
-		
+
 		Connection connection = ConnectionFactory.getConnection();
-		
-		PreparedStatement statement = connection.prepareStatement
-				("select * from plano where id=?");
+
+		PreparedStatement statement = connection.prepareStatement("select * from plano where id=?");
 		statement.setObject(1, id);
 		ResultSet resultSet = statement.executeQuery();
-		
+
 		Plano plano = null;
-		
-		if(resultSet.next()) {
-			
+
+		if (resultSet.next()) {
+
 			plano = new Plano();
 			plano.setId(UUID.fromString(resultSet.getString("id")));
 			plano.setNome(resultSet.getString("nome"));
-		} 
-		
-		
+		}
+
 		connection.close();
 		return plano;
 	}

@@ -14,5 +14,4 @@ public class ConnectionFactory {
 		Class.forName(driver);
 		return DriverManager.getConnection(url, user, password);
 	}
-	
 }
