@@ -42,7 +42,8 @@ public class ClienteRepository {
 		statement.setString(3, cliente.getTelefone());
 		statement.setObject(4, cliente.getPlano().getId());
 		statement.setObject(5, cliente.getId());
-
+		statement.execute();
+		
 		connection.close();
 	}
 

@@ -16,7 +16,7 @@ public class ClientePostRequestDto {
 	@NotBlank(message = "Por favor, informe o nome do cliente.")
 	private String nome;
 	
-	@Email(message = "Por favoir, informe um endereço de email válido")
+	@Email(message = "Por favor, informe um endereço de email válido")
 	@NotBlank(message = "Por favor, informe o email do cliente")
 	private String email;
 	
