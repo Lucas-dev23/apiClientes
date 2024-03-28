@@ -65,7 +65,9 @@ public class ClienteRepository {
 		Connection connection = ConnectionFactory.getConnection();
 		
 		PreparedStatement statement = connection.prepareStatement
-				("select * from cliente order by nome");
+				("select c.id, c.nome, c.email, c.telefone, p.id as idplano, p.nome as nomeplano "
+						+ "from cliente c inner join plano p on p.id = c.plano_id "
+						+ "order by c.nome");
 		ResultSet resultSet = statement.executeQuery();
 		
 		List<Cliente> lista = new ArrayList<Cliente>();
@@ -79,7 +81,8 @@ public class ClienteRepository {
 			cliente.setNome(resultSet.getString("nome"));
 			cliente.setEmail(resultSet.getString("email"));
 			cliente.setTelefone(resultSet.getString("telefone"));
-			cliente.getPlano().setId(UUID.fromString(resultSet.getString("plano_id")));
+			cliente.getPlano().setId(UUID.fromString(resultSet.getString("idplano")));
+			cliente.getPlano().setNome(resultSet.getString("nomeplano"));
 			
 			lista.add(cliente);
 		}
@@ -88,6 +91,35 @@ public class ClienteRepository {
 		return lista;
 	}
 	
+	public Cliente findById(UUID id) throws Exception {
+		
+		Connection connection = ConnectionFactory.getConnection();
+		
+		PreparedStatement statement = connection.prepareStatement
+				("select c.id, c.nome, c.email, c.telefone, p.id as idplano, p.nome as nomeplano "
+						+ "from cliente c inner join plano p on p.id = c.plano_id "
+						+ "where c.id = ?");
+		statement.setObject(1, id);
+		ResultSet resultSet = statement.executeQuery();
+		
+		Cliente cliente = null;
+		
+		if(resultSet.next()) {
+			
+			cliente = new Cliente();
+			cliente.setPlano(new Plano());
+			
+			cliente.setId(UUID.fromString(resultSet.getString("id")));
+			cliente.setNome(resultSet.getString("nome"));
+			cliente.setEmail(resultSet.getString("email"));
+			cliente.setTelefone(resultSet.getString("telefone"));
+			cliente.getPlano().setId(UUID.fromString(resultSet.getString("idplano")));
+			cliente.getPlano().setNome(resultSet.getString("nomeplano"));
+		}
+		
+		connection.close();
+		return cliente;
+	}
 }
 
 
