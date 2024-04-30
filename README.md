@@ -13,8 +13,9 @@ Antes de iniciar, certifique-se de ter os seguintes requisitos instalados:
 
 ## Configuração do Banco de Dados
 
-1. Instale o PostgreSQL seguindo as instruções no [site oficial](https://www.postgresql.org/download/).
-2. Crie um banco de dados no PostgreSQL para ser utilizado pelo projeto.
+1. Criação do Banco de Dados:Crie um banco de dados no PostgreSQL para ser utilizado pelo projeto. Você pode nomeá-lo como preferir, mas recomenda-se utilizar um nome significativo, como `bd_apiClientes`.
+2. Configuração da Senha no Pacote Factories:No pacote factories da API, você encontrará as configurações do seu banco de dados. Certifique-se de alterar a senha para a que você configurou no PostgreSQL. Isso garantirá que a aplicação possa se conectar ao banco de dados corretamente.
+
 
 ## API de Usuários
 
