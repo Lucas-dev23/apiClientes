@@ -10,6 +10,17 @@ Antes de iniciar, certifique-se de ter os seguintes requisitos instalados:
 - Maven
 - Spring Boot
 - PostgreSQL
+- Certifique-se também de ter o Lombok configurado corretamente na sua IDE.
+
+### Configuração do Lombok na IDE
+
+Certifique-se de que o Lombok esteja configurado corretamente na sua IDE. O Lombok é uma ferramenta de produtividade que reduz a verbosidade do código Java, permitindo a criação de classes Java com menos código boilerplate.
+
+Para configurar o Lombok na sua IDE:
+
+1. Faça o download do Lombok JAR a partir do [site oficial do Lombok](https://projectlombok.org/download).
+2. Execute o JAR baixado (`lombok.jar`), selecionando a IDE que você está utilizando.
+3. Siga as instruções fornecidas para completar a instalação e configuração do Lombok na sua IDE.
 
 ## Configuração do Banco de Dados
 
