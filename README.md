@@ -1,18 +1,31 @@
-# Getting Started
+# API de Clientes
 
-### Reference Documentation
-For further reference, please consider the following sections:
+A API de Clientes é uma aplicação Spring Boot que oferece funcionalidades CRUD (Create, Read, Update, Delete) para gerenciamento de clientes. Além disso, permite que os usuários façam autenticação para acessar as operações disponíveis. Os clientes também têm a opção de escolher um tipo de plano, que é armazenado no banco de dados PostgreSQL.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.2.2/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.2.2/maven-plugin/reference/html/#build-image)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/3.2.2/reference/htmlsingle/index.html#using.devtools)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.2.2/reference/htmlsingle/index.html#web)
+## Pré-requisitos
 
-### Guides
-The following guides illustrate how to use some features concretely:
+Antes de iniciar, certifique-se de ter os seguintes requisitos instalados:
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+- Java JDK 17
+- Maven
+- Spring Boot
+- PostgreSQL
+
+## Configuração do Banco de Dados
+
+1. Instale o PostgreSQL seguindo as instruções no [site oficial](https://www.postgresql.org/download/).
+2. Crie um banco de dados no PostgreSQL para ser utilizado pelo projeto.
+
+## API de Usuários
+
+Esta API de Clientes está integrada com a [API de Usuários](https://github.com/Lucas-dev23/apiUsuarios) para autenticação. Certifique-se de configurar e executar a API de Usuários em conjunto com esta aplicação, caso contrário ela não irá funcionar corretamente.
+
+## Clientes Web
+
+A interface de usuário (UI) desta API de Clientes foi desenvolvida em Angular e está disponível em: [Clientes Web](https://github.com/Lucas-dev23/clientesWeb).
+
+## Executando o Script SQL
+
+Dentro do diretório do projeto, você encontrará um arquivo chamado `script.sql`. Execute esse script no seu banco de dados recém-criado para criar as tabelas necessária.
+
 
