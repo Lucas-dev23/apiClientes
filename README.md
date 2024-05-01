@@ -10,6 +10,7 @@ Antes de iniciar, certifique-se de ter os seguintes requisitos instalados:
 - Maven
 - Spring Boot
 - PostgreSQL
+- Ter a [API de Usuários](https://github.com/Lucas-dev23/apiUsuarios) para que você esteja autenticado a utilizar os serviços desta api.
 - Certifique-se também de ter o Lombok configurado corretamente na sua IDE.
 
 ### Configuração do Lombok na IDE
