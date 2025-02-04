@@ -3,6 +3,7 @@ package br.com.cotiinformatica.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,171 +17,94 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.cotiinformatica.dtos.ClientePostRequestDto;
 import br.com.cotiinformatica.dtos.ClientePutRequestDto;
 import br.com.cotiinformatica.entities.Cliente;
-import br.com.cotiinformatica.entities.Plano;
-import br.com.cotiinformatica.repositories.ClienteRepository;
-import br.com.cotiinformatica.repositories.PlanoRepository;
+import br.com.cotiinformatica.services.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/clientes")
 public class ClienteController {
-
+	
+	@Autowired
+	private ClienteService clienteService;
+	
 	@PostMapping()
-	public ResponseEntity<String> post(@RequestBody @Valid ClientePostRequestDto dto) {
+	@Operation(
+	    summary = "Cadastrar cliente",
+	    description = "Endpoint responsável por cadastrar clientes. Certifique-se de inserir o token de acesso."
+	)
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso."),
+	    @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+	    @ApiResponse(responseCode = "401", description = "Não autorizado. Token ausente ou inválido."),
+	    @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+	})
+	public ResponseEntity<String> post(@RequestBody @Valid ClientePostRequestDto dto) throws Exception {
+	    return clienteService.cadastrar(dto);
+	}
 
-		try {
-			
-			//preenchendo os dados do cliente
-			Cliente cliente = new Cliente();						
-			cliente.setId(UUID.randomUUID());
-			cliente.setNome(dto.getNome());
-			cliente.setEmail(dto.getEmail());
-			cliente.setTelefone(dto.getTelefone());
-			
-			//consultar o plano no banco de dados através do ID
-			PlanoRepository planoRepository = new PlanoRepository();
-			Plano plano = planoRepository.findById(dto.getPlanoId());
-			
-			//verificando se o plano não foi encontrado
-			if(plano == null)
-				//HTTP 400 - BAD REQUEST
-				return ResponseEntity.status(400)
-						.body("Plano não encontrado. Verifique o ID informado.");
-				
-			//associar o plano ao cliente
-			cliente.setPlano(plano);
-			
-			//cadastrar o cliente no banco de dados
-			ClienteRepository clienteRepository = new ClienteRepository();
-			clienteRepository.insert(cliente);
-			
-			//HTTP 201 - CREATED
-			return ResponseEntity.status(201)
-					.body("Cliente cadastrado com sucesso.");
-		}
-		catch(Exception e) {
-			
-			//HTTP 500 - INTERNAL SERVER ERROR
-			return ResponseEntity.status(500)
-					.body(e.getMessage());
-		}
+	@PutMapping()
+	@Operation(
+	    summary = "Atualizar cliente",
+	    description = "Endpoint responsável por atualizar clientes. Certifique-se de inserir o token de acesso."
+	)
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "201", description = "Cliente atualizado com sucesso."),
+	    @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+	    @ApiResponse(responseCode = "401", description = "Não autorizado. Token ausente ou inválido."),
+	    @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+	})
+	public ResponseEntity<String> put(@RequestBody @Valid ClientePutRequestDto dto) throws Exception{
+		return clienteService.atualizar(dto);
 	}
 	
-	@PutMapping()
-	public ResponseEntity<String> put(@RequestBody @Valid ClientePutRequestDto dto) {
-
-		try {
-			
-			//consultar o cliente no banco de dados através do ID
-			ClienteRepository clienteRepository = new ClienteRepository();
-			Cliente cliente = clienteRepository.findById(dto.getId());
-			
-			//verificar se o cliente não foi encontrado
-			if(cliente == null)
-				return ResponseEntity.status(400) //HTTP 400 - BAD REQUEST
-						.body("Cliente não encontrado. Verifique o ID informado.");
-			
-			//consultar o plano no banco de dados através do ID
-			PlanoRepository planoRepository = new PlanoRepository();
-			Plano plano = planoRepository.findById(dto.getPlanoId());
-			
-			//verificar se o plano não foi encontrado
-			if(plano == null)
-				return ResponseEntity.status(400) //HTTP 400 - BAD REQUEST
-						.body("Plano não encontrado. Verifique o ID informado.");
-			
-			//modificando os dados do cliente
-			cliente.setNome(dto.getNome());
-			cliente.setEmail(dto.getEmail());
-			cliente.setTelefone(dto.getTelefone());
-			cliente.setPlano(plano);
-
-			//atualizar o cliente no banco de dados
-			clienteRepository.update(cliente);
-			
-			//HTTP 200 - OK
-			return ResponseEntity.status(200)
-					.body("Cliente atualizado com sucesso.");
-		}
-		catch(Exception e) {
-			
-			//HTTP 500 - INTERNAL SERVER ERROR
-			return ResponseEntity.status(500)
-					.body(e.getMessage());
-		}
-	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
-
-		try {
-			
-			//consultar os dados do cliente através do ID
-			ClienteRepository clienteRepository = new ClienteRepository();
-			Cliente cliente = clienteRepository.findById(id);
-			
-			//verificando se o cliente não foi encontrado
-			if(cliente == null)
-				//HTTP 400 - BAD REQUEST
-				return ResponseEntity.status(400)
-						.body("Cliente não encontrado. Verifique o ID informado.");
-			
-			//excluindo o cliente
-			clienteRepository.delete(cliente);
-			
-			//HTTP 200 - OK
-			return ResponseEntity.status(200)
-					.body("Cliente excluído com sucesso.");
-		}
-		catch(Exception e) {
-			//HTTP 500 - INTERNAL SERVER ERROR
-			return ResponseEntity.status(500)
-					.body(e.getMessage());
-		}
+	@Operation(
+		    summary = "Excluir cliente",
+		    description = "Endpoint responsável por excluir clientes. Certifique-se de inserir o token de acesso."
+		)
+		@ApiResponses(value = {
+		    @ApiResponse(responseCode = "201", description = "Cliente excluído com sucesso."),
+		    @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+		    @ApiResponse(responseCode = "401", description = "Não autorizado. Token ausente ou inválido."),
+		    @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+		})
+	public ResponseEntity<String> delete(@PathVariable UUID id) {
+		return clienteService.excluir(id);
 	}
 	
 	@GetMapping()
+	@Operation(
+		    summary = "Consultar clientes",
+		    description = "Endpoint responsável por consultar todos os clientes. Certifique-se de inserir o token de acesso."
+		)
+		@ApiResponses(value = {
+		    @ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso."),
+		    @ApiResponse(responseCode = "204", description = "Lista de clientes vazia."),
+		    @ApiResponse(responseCode = "401", description = "Não autorizado. Token ausente ou inválido."),
+		    @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+		})
 	public ResponseEntity<List<Cliente>> getAll() throws Exception {
-
-		try {
-			
-			ClienteRepository clienteRepository = new ClienteRepository();
-			List<Cliente> clientes = clienteRepository.findAll();
-			
-			if(clientes.size() == 0) //se a lista está vazia
-				//HTTP 204 - NO CONTENT
-				return ResponseEntity.status(204).body(null);
-			
-			//HTTP 200 - OK
-			return ResponseEntity.status(200)
-					.body(clientes);
-		}
-		catch(Exception e) {
-			//HTTP 500 - INTERNAL SERVER ERROR
-			return ResponseEntity.status(500).body(null);
-		}
+		return clienteService.consultarTodos();
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Cliente> getById(@PathVariable("id") UUID id) throws Exception {
-		
-		try {
-			
-			ClienteRepository clienteRepository = new ClienteRepository();
-			Cliente cliente = clienteRepository.findById(id);
-			
-			if(cliente == null)
-				//HTTP 204 - NO CONTENT
-				return ResponseEntity.status(204).body(null);
-			
-			//HTTP 200 - OK
-			return ResponseEntity.status(200)
-					.body(cliente);
-		}
-		catch(Exception e) {
-			//HTTP 500 - INTERNAL SERVER ERROR
-			return ResponseEntity.status(500).body(null);
-		}
+	@Operation(
+		    summary = "Consultar cliente por id",
+		    description = "Endpoint responsável por consultar cliente por id. Certifique-se de inserir o token de acesso."
+		)
+		@ApiResponses(value = {
+		    @ApiResponse(responseCode = "200", description = "Cliente retornado com sucesso."),
+		    @ApiResponse(responseCode = "204", description = "Cliente não encontrado, verifique o id."),
+		    @ApiResponse(responseCode = "401", description = "Não autorizado. Token ausente ou inválido."),
+		    @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+		})
+	public ResponseEntity<Cliente> getById(@PathVariable UUID id) throws Exception {
+		return clienteService.consultarPorId(id);
 	}
 	
 }
