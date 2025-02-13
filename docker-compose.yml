@@ -1,0 +1,30 @@
+#Configurando uma rede para conectar os conteiners
+networks:
+  apiclientes-network: #nome da rede
+    driver: bridge #rede do tipo compartilhada
+
+#Configurando os serviços / conteiners
+services:
+  api-clientes: #servidor/conteiner para execução do projeto
+    build:
+      context: . #raiz do projeto
+      dockerfile: Dockerfile #nome do arquivo de configuração
+    ports:
+      - "8081:8081" #porta externa : porta interna
+    networks:
+      - apiclientes-network #rede compartilhada
+    depends_on:
+      - postgres
+  postgres: #servidor/conteiner para execução do banco de dados
+    image: postgres:latest #instalando a versão mais recente do postgres
+    container_name: postgres
+    environment: #configurações de ambiente para criação do servidor
+      POSTGRES_USER: postgres #usuário do postgre
+      POSTGRES_PASSWORD: 241099 #senha do usuário
+      POSTGRES_DB: bd_apiClientes #nome do banco de dados
+    ports:
+      - "5432:5432" #porta de execução do servidor
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d #Executa os scripts Sql.
+    networks:
+      - apiclientes-network #rede compartilhada
