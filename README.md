@@ -27,7 +27,7 @@ Esta API de Clientes está integrada com a [API de Usuários](https://github.com
 
 # Como Testar
 
-Você pode utilizar tanto o Postman quanto o [Swagger](http://http://localhost:8081/swagger-ui/index.html) que possui a documentação da API.
+Você pode utilizar tanto o Postman quanto o [Swagger](http://localhost:8081/swagger-ui/index.html) que possui a documentação da API.
 
 ## Clientes Web
 
