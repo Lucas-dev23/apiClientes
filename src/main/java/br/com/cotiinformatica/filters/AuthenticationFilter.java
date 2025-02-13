@@ -2,6 +2,7 @@ package br.com.cotiinformatica.filters;
 
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -15,6 +16,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Slf4j
 public class AuthenticationFilter extends GenericFilterBean {
 
 	@Override
@@ -30,8 +32,8 @@ public class AuthenticationFilter extends GenericFilterBean {
 			filterChain.doFilter(request, response);
 		} else {
 			if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+				log.warn("Tentativa de acesso sem token ou com token inválido");
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acesso não autorizado.");
-				return;
 			} else {
 				Environment env = RequestContextUtils.findWebApplicationContext(request).getEnvironment();
 				String jwtSecret = env.getProperty("jwt.secret");
