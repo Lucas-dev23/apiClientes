@@ -6,7 +6,7 @@ A API de Clientes é uma aplicação Spring Boot que oferece funcionalidades CRU
 Este projeto possui integração com Docker para facilitar as configurações de ambiente. Mas se preferir pode seguir os passos abaixo.
 
 # ATENÇÃO
-Se for rodar o projeto localmente sem Docker, certifique-se de configurar de configurar a configuração de conexão com postgres para local.
+Se for rodar o projeto localmente sem Docker, certifique-se de configurar a conexão com postgres para local.
 
 ## Pré-requisitos
 
